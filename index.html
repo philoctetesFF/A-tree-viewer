@@ -8,6 +8,8 @@
         /* 圣诞主题配色 */
         :root {
             --christmas-red: #c42b2b;
+            --christmas-red-dark: #a02020;
+            --christmas-red-light: #e05555;
             --christmas-green: #2d8a4c;
             --christmas-gold: #d4af37;
             --christmas-gold-hover: #f5d042;
@@ -280,14 +282,15 @@
             box-shadow: 0 12px 25px rgba(0, 0, 0, 0.4);
         }
 
-        /* 全屏查看器 */
+        /* 全屏查看器 - 圣诞主题 */
         .fullscreen-viewer {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, var(--dark-green) 0%, #1a1a1a 100%);
+            /* 初始为深色背景 */
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -321,7 +324,7 @@
         }
 
         .bg-toggle {
-            background: linear-gradient(135deg, var(--christmas-red) 0%, var(--christmas-green) 100%);
+            background: linear-gradient(135deg, var(--christmas-red) 0%, var(--christmas-red-light) 100%);
             color: white;
             border: none;
             padding: 12px 20px;
@@ -366,7 +369,7 @@
         }
 
         .nav-btn {
-            background: linear-gradient(135deg, var(--christmas-red) 0%, var(--christmas-green) 100%);
+            background: linear-gradient(135deg, var(--christmas-red) 0%, var(--christmas-red-light) 100%);
             color: white;
             border: none;
             width: 60px;
@@ -379,7 +382,7 @@
             justify-content: center;
             transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 2px solid white;
+            border: 2px solid var(--christmas-gold);
         }
 
         .nav-btn:hover {
@@ -535,7 +538,7 @@
     <!-- 页面头部 -->
     <div class="header">
         <h1>🎄 圣诞树动画全屏查看器 🎄</h1>
-        <p>点击任意图片可全屏查看，支持白色背景切换</p>
+        <p>点击任意图片可全屏查看，支持背景颜色切换</p>
     </div>
 
     <!-- 主内容区域 -->
@@ -582,7 +585,7 @@
     <div class="fullscreen-viewer" id="fullscreenViewer">
         <div class="fullscreen-controls">
             <button class="close-btn" onclick="closeFullscreen()">×</button>
-            <button class="bg-toggle" onclick="toggleBackground()">🎨 切换背景</button>
+            <button class="bg-toggle" onclick="toggleBackground()">🎨 切换红色背景</button>
         </div>
 
         <div class="fullscreen-nav">
@@ -614,7 +617,8 @@
 
         // 当前查看的图片索引
         let currentIndex = 0;
-        let isBlackBackground = true;
+        // 背景状态：true为深色背景，false为红色背景
+        let isDarkBackground = true;
 
         // 创建雪花背景
         function createSnowflakes() {
@@ -748,19 +752,21 @@
             openFullscreen(currentIndex);
         }
 
-        // 切换背景颜色
+        // 切换背景颜色（深色背景 ⇄ 红色背景）
         function toggleBackground() {
             const viewer = document.getElementById('fullscreenViewer');
             const btn = document.querySelector('.bg-toggle');
             
-            isBlackBackground = !isBlackBackground;
+            isDarkBackground = !isDarkBackground;
             
-            if (isBlackBackground) {
-                viewer.style.background = 'linear-gradient(135deg, var(--dark-green) 0%, #1a1a1a 100%)';
-                btn.textContent = '🎨 圣诞背景';
+            if (isDarkBackground) {
+                // 深色背景
+                viewer.style.background = 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)';
+                btn.textContent = '🎨 切换红色背景';
             } else {
-                viewer.style.background = 'linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%)';
-                btn.textContent = '🎨 深色背景';
+                // 圣诞红色背景
+                viewer.style.background = 'linear-gradient(135deg, var(--christmas-red-dark) 0%, var(--christmas-red) 50%, var(--christmas-red-light) 100%)';
+                btn.textContent = '🎨 切换深色背景';
             }
         }
 
